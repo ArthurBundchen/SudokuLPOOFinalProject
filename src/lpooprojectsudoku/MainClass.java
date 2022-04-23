@@ -1,5 +1,7 @@
 package lpooprojectsudoku;
 
+import java.util.Arrays;
+
 /**
  *
  * @author arthur coimbra bundchen
@@ -7,9 +9,9 @@ package lpooprojectsudoku;
 
 public class MainClass {
     public static void main(String[] args) {
-        //Apenas testes
-        //Board novoSudoku = new Board(3,1);
-        //novoSudoku.showBoard();
+        DecimalBoard novotabuleiro = new DecimalBoard(1);
+        novotabuleiro.testBoard();
+        
     }
-    
+    //montar função que recebe o array[][] e retorna um array[] desejado
 }

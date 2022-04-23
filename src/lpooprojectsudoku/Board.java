@@ -6,18 +6,14 @@ package lpooprojectsudoku;
  */
 
 public abstract class Board {
-    private int size = 3;
     private int level;
     private boolean ready;
-    private int[][] playerBoard = new int[size*size][size*size];
-    private int[][] answerBoard = new int[size*size][size*size];
     
     //Constructor
-    public Board(int size, int level) {
-        this.setSize(size);
+    public Board(int level) {
         this.setLevel(level);
     }
-    
+       
     //Getters and Setters
     public int getLevel() {
         return level;
@@ -27,14 +23,6 @@ public abstract class Board {
         if(level > 0 && level < 4){
             this.level = level;
         }
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public boolean isReady() {
@@ -48,15 +36,18 @@ public abstract class Board {
     //Normal Methods
     public abstract void creatAnswerBoard();
     
-    public abstract void showBoard();
+    public abstract void addAttempt(int array[][][]);
     
-    public abstract void addAttempt(int array[][]);
+    public abstract void isTryRight(int attempt,int array[][][]);
     
-    public abstract void isTryRight(int attempt,int array[][]);
+    public abstract boolean rowsValidation();
     
-    public abstract boolean rowsValidation(int attempt);
+    public abstract boolean columnsValidation();
     
-    public abstract boolean linesValidation(int attempt);
+    public abstract boolean matrixValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
     
-    public abstract boolean matrixValidation(int attempt);
+    //Methods that will be deleted when Grafic Interface gets build up.
+    public abstract void showBoard(int[][][] pb);
+    
+    public abstract void testBoard();
 }
