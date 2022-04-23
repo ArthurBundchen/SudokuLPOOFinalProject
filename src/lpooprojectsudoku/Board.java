@@ -40,7 +40,7 @@ public abstract class Board {
     
     public abstract void isTryRight(int attempt,int array[][][]);
     
-    public abstract boolean rowsValidation();
+    public abstract boolean rowsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
     
     public abstract boolean columnsValidation();
     

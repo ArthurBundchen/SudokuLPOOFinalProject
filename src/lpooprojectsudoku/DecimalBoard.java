@@ -38,6 +38,7 @@ public class DecimalBoard extends Board {
 
     @Override
     public void creatAnswerBoard() {
+        
     }
 
     @Override
@@ -49,16 +50,55 @@ public class DecimalBoard extends Board {
     }
 
     @Override
-    public boolean rowsValidation() {
-        boolean check[] = new boolean[this.size];
-        for (int i = 0; i < this.getSize(); i++) {
-            if (this.getPlayerBoard()[i][0] != this.getPlayerBoard()[i][1] && this.getPlayerBoard()[i][0] != this.getPlayerBoard()[i][2]) {
-                check[i] = true;
-            } else {
-                check[i] = false;
+    public boolean rowsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
+        boolean check[] = new boolean[9];
+        int ind = 0;
+        if(mIndex == 0 || mIndex == 1 || mIndex == 2){
+            for(int m = 0; m < this.size; m++){
+                for(int c = 0; c < this.size; c++){
+                    if(board[m][rIndex][c] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
             }
+            // [0][rIndex][i] para i = 0, 1, 2
+            // [1][rIndex][i] para i = 0, 1, 2
+            // [2][rIndex][i] para i = 0, 1, 2
+        } else if(mIndex == 3 || mIndex == 4 || mIndex == 5){
+            for(int m = 0 + 3; m < this.size + 3; m++){
+                for(int c = 0; c < this.size; c++){
+                    if(board[m][rIndex][c] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
+            }
+            // [3][rIndex][i] para i = 0, 1, 2
+            // [4][rIndex][i] para i = 0, 1, 2
+            // [5][rIndex][i] para i = 0, 1, 2
+            
+        } else if(mIndex == 6 || mIndex == 7 || mIndex == 8){
+            for(int m = 0 + 6; m < this.size + 6; m++){
+                for(int c = 0; c < this.size; c++){
+                    if(board[m][rIndex][c] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
+            }
+            // [6][rIndex][i] para i = 0, 1, 2
+            // [7][rIndex][i] para i = 0, 1, 2
+            // [8][rIndex][i] para i = 0, 1, 2
+            
         }
-        return check[0] && check[1] && check[2];
+        if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
+                && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
+            board[mIndex][rIndex][cIndex] = attempt;
+            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -78,8 +118,8 @@ public class DecimalBoard extends Board {
     public boolean matrixValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
         boolean[] check = new boolean[9];
         int ind = 0;
-        for (int i = 0; i < (size); i++) {
-            for (int j = 0; j < (size); j++) {
+        for (int i = 0; i < (this.size); i++) {
+            for (int j = 0; j < (this.size); j++) {
                 if (board[mIndex][i][j] != attempt) { //Vai comparar a tentativa a todos os elementos da matrix
                     check[ind] = true;
                 }
@@ -89,6 +129,7 @@ public class DecimalBoard extends Board {
         if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
                 && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
             board[mIndex][rIndex][cIndex] = attempt;
+            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
             return true;
         }
         return false;
@@ -112,10 +153,9 @@ public class DecimalBoard extends Board {
 
     @Override
     public void testBoard() {
-        //matrixValidation(this.answerBoard, 1, 3);
         insertValues(this.answerBoard);
-        this.matrixValidation(answerBoard, 0, 2, 1, 8);
-        this.matrixValidation(answerBoard, 0, 0, 0, 1);
+        this.rowsValidation(answerBoard, 0, 2, 1, 3);
+        //this.matrixValidation(answerBoard, 0, 0, 0, 1);
         showBoard(this.getAnswerBoard());
     }
 
