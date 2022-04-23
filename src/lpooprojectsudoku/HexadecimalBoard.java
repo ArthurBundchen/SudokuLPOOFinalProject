@@ -49,7 +49,7 @@ public class HexadecimalBoard extends Board{
     }
 
     @Override
-    public boolean columnsValidation() {
+    public boolean columnsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
         return true;
     }
 

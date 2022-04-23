@@ -42,7 +42,7 @@ public abstract class Board {
     
     public abstract boolean rowsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
     
-    public abstract boolean columnsValidation();
+    public abstract boolean columnsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
     
     public abstract boolean matrixValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
     

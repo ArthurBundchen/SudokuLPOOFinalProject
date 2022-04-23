@@ -102,16 +102,55 @@ public class DecimalBoard extends Board {
     }
 
     @Override
-    public boolean columnsValidation() {
-        boolean check[] = new boolean[this.getSize()];
-        for (int j = 0; j < this.getSize(); j++) {
-            if (this.getPlayerBoard()[0][j] != this.getPlayerBoard()[1][j] && this.getPlayerBoard()[0][j] != this.getPlayerBoard()[2][j]) {
-                check[j] = true;
-            } else {
-                check[j] = false;
+    public boolean columnsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
+        boolean check[] = new boolean[9];
+        int ind = 0;
+        if(mIndex == 0 || mIndex == 3 || mIndex == 6){
+            for(int m = 0; m <= 6; m+=3){
+                for(int r = 0; r < this.size; r++){
+                    if(board[m][r][cIndex] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
             }
+            // [0][i][cIndex] para i = 0, 1, 2
+            // [3][i][cIndex] para i = 0, 1, 2
+            // [6][i][cIndex] para i = 0, 1, 2
+            
+        } else if(mIndex == 1 || mIndex == 4 || mIndex == 7){
+            for(int m = 1; m <= 7; m+=3){
+                for(int r = 0; r < this.size; r++){
+                    if(board[m][r][cIndex] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
+            }
+            // [1][i][cIndex] para i = 0, 1, 2
+            // [4][i][cIndex] para i = 0, 1, 2
+            // [7][i][cIndex] para i = 0, 1, 2
+            
+        } else if(mIndex == 2 || mIndex == 5 || mIndex == 8){
+            for(int m = 2; m <= 8; m+=3){
+                for(int r = 0; r < this.size; r++){
+                    if(board[m][r][cIndex] != attempt){
+                        check[ind] = true;
+                    }
+                    ind++;
+                }
+            }
+            // [2][i][cIndex] para i = 0, 1, 2
+            // [5][i][cIndex] para i = 0, 1, 2
+            // [8][i][cIndex] para i = 0, 1, 2
         }
-        return check[0] && check[1] && check[2];
+        if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
+                && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
+            board[mIndex][rIndex][cIndex] = attempt;
+            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -154,7 +193,7 @@ public class DecimalBoard extends Board {
     @Override
     public void testBoard() {
         insertValues(this.answerBoard);
-        this.rowsValidation(answerBoard, 0, 2, 1, 3);
+        this.columnsValidation(answerBoard, 0, 2, 1, 4);
         //this.matrixValidation(answerBoard, 0, 0, 0, 1);
         showBoard(this.getAnswerBoard());
     }
