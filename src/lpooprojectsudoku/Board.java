@@ -33,21 +33,17 @@ public abstract class Board {
         this.ready = ready;
     }
     
-    //Normal Methods
-    public abstract void creatAnswerBoard();
+    //Normal Methods    
+    //public abstract static boolean checkAll(int board[][], int rIndex, int cIndex, int attempt);
     
-    public abstract void addAttempt(int array[][][]);
+    //public abstract boolean checkOnRow(int board[][], int rIndex, int attempt);
     
-    public abstract void isTryRight(int attempt,int array[][][]);
+    //public abstract boolean checkOnColumn(int board[][], int cIndex, int attempt);
     
-    public abstract boolean rowsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
-    
-    public abstract boolean columnsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
-    
-    public abstract boolean matrixValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt);
+    //public abstract boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt);
     
     //Methods that will be deleted when Grafic Interface gets build up.
-    public abstract void showBoard(int[][][] pb);
+    //public abstract void showBoard(int board[][]);
     
     public abstract void testBoard();
 }

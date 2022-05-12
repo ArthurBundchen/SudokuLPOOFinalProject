@@ -1,6 +1,7 @@
 package lpooprojectsudoku;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  *
@@ -8,203 +9,141 @@ import java.util.Arrays;
  */
 public class DecimalBoard extends Board {
 
-    private final int size = 3;
-    private int[][][] playerBoard = new int[size * size][size][size];
-    private int[][][] answerBoard = new int[size * size][size][size];
+    private static final int SIZE = 9;
+    public static int[][] playerBoard = new int[][] {{2,0,5,  0,0,7,  0,0,6},
+                                                     {4,0,0,  9,6,0,  0,2,0},
+                                                     {0,0,0,  0,8,0,  0,4,5},
+
+                                                     {9,8,0,  0,7,4,  0,0,0},
+                                                     {5,7,0,  8,0,2,  0,6,9},
+                                                     {0,0,0,  6,3,0,  0,5,7},
+
+                                                     {7,5,0,  0,2,0,  0,0,0},
+                                                     {0,6,0,  0,5,1,  0,0,2},
+                                                     {3,0,0,  4,0,0,  5,0,8}};
 
     public DecimalBoard(int level) {
         super(level);
     }
 
-    public int getSize() {
-        return size;
+    //NEW
+    public static void setAttempt(int board[][], int row, int column, int attempt){
+        if(attempt > 0 && attempt < 10){
+            playerBoard[row][column] = attempt;
+        }
+    }
+    
+    public static boolean isBoardFull(int board[][]) {
+        int zeroCc = 0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (i == 0 && j == 0) {
+                    zeroCc = 0;
+                }
+                if (board[i][j] == 0) {
+                    zeroCc++;
+                };
+            }
+        }
+        if (zeroCc == 0) {
+            return true;
+        }
+        return false;
+    }
+    //@Override
+    public static boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
+        return !checkOnRow(board, rIndex, attempt) && !checkOnColumn(board, cIndex, attempt) && !checkOnMatrix(board, rIndex, cIndex, attempt);
+    }
+    
+    //@Override
+    public static boolean checkOnRow(int board[][], int rIndex, int attempt) {
+        for(int i = 0; i < 9; i++){
+            if(board[rIndex][i]== attempt){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //@Override
+    public static boolean checkOnColumn(int board[][], int cIndex, int attempt) {
+        for(int i = 0; i < 9; i++){
+            if(board[i][cIndex]== attempt){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public int[][][] getPlayerBoard() {
-        return playerBoard;
-    }
-
-    public void setPlayerBoard(int[][][] playerBoard) {
-        this.playerBoard = playerBoard;
-    }
-
-    public int[][][] getAnswerBoard() {
-        return answerBoard;
-    }
-
-    public void setAnswerBoard(int[][][] answerBoard) {
-        this.answerBoard = answerBoard;
-    }
-
-    @Override
-    public void creatAnswerBoard() {
+    //@Override
+    public static boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt) {
+        int matrixRow = rIndex  - (rIndex % 3);
+        int matrixColumn = cIndex  - (cIndex % 3);
         
-    }
-
-    @Override
-    public void addAttempt(int[][][] array) {
-    }
-
-    @Override
-    public void isTryRight(int attempt, int[][][] array) {
-    }
-
-    @Override
-    public boolean rowsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
-        boolean check[] = new boolean[9];
-        int ind = 0;
-        if(mIndex == 0 || mIndex == 1 || mIndex == 2){
-            for(int m = 0; m < this.size; m++){
-                for(int c = 0; c < this.size; c++){
-                    if(board[m][rIndex][c] != attempt){
-                        check[ind] = true;
-                    }
-                    ind++;
+        for(int i = matrixRow; i < matrixRow + 3; i++){
+            for(int j = matrixColumn; i < matrixColumn + 3; i++){
+                if(board[i][j] == attempt){
+                    return true;
                 }
             }
-            // [0][rIndex][i] para i = 0, 1, 2
-            // [1][rIndex][i] para i = 0, 1, 2
-            // [2][rIndex][i] para i = 0, 1, 2
-        } else if(mIndex == 3 || mIndex == 4 || mIndex == 5){
-            for(int m = 0 + 3; m < this.size + 3; m++){
-                for(int c = 0; c < this.size; c++){
-                    if(board[m][rIndex][c] != attempt){
-                        check[ind] = true;
-                    }
-                    ind++;
-                }
-            }
-            // [3][rIndex][i] para i = 0, 1, 2
-            // [4][rIndex][i] para i = 0, 1, 2
-            // [5][rIndex][i] para i = 0, 1, 2
-            
-        } else if(mIndex == 6 || mIndex == 7 || mIndex == 8){
-            for(int m = 0 + 6; m < this.size + 6; m++){
-                for(int c = 0; c < this.size; c++){
-                    if(board[m][rIndex][c] != attempt){
-                        check[ind] = true;
-                    }
-                    ind++;
-                }
-            }
-            // [6][rIndex][i] para i = 0, 1, 2
-            // [7][rIndex][i] para i = 0, 1, 2
-            // [8][rIndex][i] para i = 0, 1, 2
-            
-        }
-        if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
-                && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
-            board[mIndex][rIndex][cIndex] = attempt;
-            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
-            return true;
         }
         return false;
     }
-
-    @Override
-    public boolean columnsValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
-        boolean check[] = new boolean[9];
-        int ind = 0;
-        if(mIndex == 0 || mIndex == 3 || mIndex == 6){
-            for(int m = 0; m <= 6; m+=3){
-                for(int r = 0; r < this.size; r++){
-                    if(board[m][r][cIndex] != attempt){
-                        check[ind] = true;
+    
+    public boolean solveBoard(int board[][]){
+        for(int row = 0; row < 9; row++){
+            for(int column = 0; column < 9; column++){
+                if(board[row][column] == 0){
+                    for(int numToTry = 1; numToTry < 10; numToTry++){
+                        if(checkAll(board, row, column, numToTry)){
+                            board[row][column] = numToTry;
+                            if(solveBoard(board)){
+                                return true;
+                            } else{
+                                board[row][column] = 0;
+                            }
+                        }
                     }
-                    ind++;
+                    return false;
                 }
             }
-            // [0][i][cIndex] para i = 0, 1, 2
-            // [3][i][cIndex] para i = 0, 1, 2
-            // [6][i][cIndex] para i = 0, 1, 2
-            
-        } else if(mIndex == 1 || mIndex == 4 || mIndex == 7){
-            for(int m = 1; m <= 7; m+=3){
-                for(int r = 0; r < this.size; r++){
-                    if(board[m][r][cIndex] != attempt){
-                        check[ind] = true;
-                    }
-                    ind++;
-                }
-            }
-            // [1][i][cIndex] para i = 0, 1, 2
-            // [4][i][cIndex] para i = 0, 1, 2
-            // [7][i][cIndex] para i = 0, 1, 2
-            
-        } else if(mIndex == 2 || mIndex == 5 || mIndex == 8){
-            for(int m = 2; m <= 8; m+=3){
-                for(int r = 0; r < this.size; r++){
-                    if(board[m][r][cIndex] != attempt){
-                        check[ind] = true;
-                    }
-                    ind++;
-                }
-            }
-            // [2][i][cIndex] para i = 0, 1, 2
-            // [5][i][cIndex] para i = 0, 1, 2
-            // [8][i][cIndex] para i = 0, 1, 2
         }
-        if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
-                && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
-            board[mIndex][rIndex][cIndex] = attempt;
-            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
-            return true;
-        }
-        return false;
+        return true;
     }
-
-    @Override
-    public boolean matrixValidation(int board[][][], int mIndex, int rIndex, int cIndex, int attempt) {
-        boolean[] check = new boolean[9];
-        int ind = 0;
-        for (int i = 0; i < (this.size); i++) {
-            for (int j = 0; j < (this.size); j++) {
-                if (board[mIndex][i][j] != attempt) { //Vai comparar a tentativa a todos os elementos da matrix
-                    check[ind] = true;
-                }
-                ind++;
-            }
-        }
-        if (check[0] == true && check[1] == true && check[2] == true && check[3] == true
-                && check[4] == true && check[5] == true && check[6] == true && check[7] == true && check[8] == true) {
-            board[mIndex][rIndex][cIndex] = attempt;
-            //quando os 3 metodos estiverem implementados a atribuição do attempt sera removido daqui
-            return true;
-        }
-        return false;
-    }
-
+    
     //Methods that will be deleted when Grafic Interface gets build up.
-    @Override
-    public void showBoard(int pb[][][]) {
-        System.out.println(pb[0][0][0] + " " + pb[0][0][1] + " " + pb[0][0][2] + " | " + pb[1][0][0] + " " + pb[1][0][1] + " " + pb[1][0][2] + " | " + pb[2][0][0] + " " + pb[2][0][1] + " " + pb[2][0][2]);
-        System.out.println(pb[0][1][0] + " " + pb[0][1][1] + " " + pb[0][1][2] + " | " + pb[1][1][0] + " " + pb[1][1][1] + " " + pb[1][1][2] + " | " + pb[2][1][0] + " " + pb[2][1][1] + " " + pb[2][1][2]);
-        System.out.println(pb[0][2][0] + " " + pb[0][2][1] + " " + pb[0][2][2] + " | " + pb[1][2][0] + " " + pb[1][2][1] + " " + pb[1][2][2] + " | " + pb[2][2][0] + " " + pb[2][2][1] + " " + pb[2][2][2]);
-        System.out.println("------+-------+------");
-        System.out.println(pb[3][0][0] + " " + pb[3][0][1] + " " + pb[3][0][2] + " | " + pb[4][0][0] + " " + pb[4][0][1] + " " + pb[4][0][2] + " | " + pb[5][0][0] + " " + pb[5][0][1] + " " + pb[5][0][2]);
-        System.out.println(pb[3][1][0] + " " + pb[3][1][1] + " " + pb[3][1][2] + " | " + pb[4][1][0] + " " + pb[4][1][1] + " " + pb[4][1][2] + " | " + pb[5][1][0] + " " + pb[5][1][1] + " " + pb[5][1][2]);
-        System.out.println(pb[3][2][0] + " " + pb[3][2][1] + " " + pb[3][2][2] + " | " + pb[4][2][0] + " " + pb[4][2][1] + " " + pb[4][2][2] + " | " + pb[5][2][0] + " " + pb[5][2][1] + " " + pb[5][2][2]);
-        System.out.println("------+-------+------");
-        System.out.println(pb[6][0][0] + " " + pb[6][0][1] + " " + pb[6][0][2] + " | " + pb[7][0][0] + " " + pb[7][0][1] + " " + pb[7][0][2] + " | " + pb[8][0][0] + " " + pb[8][0][1] + " " + pb[8][0][2]);
-        System.out.println(pb[6][1][0] + " " + pb[6][1][1] + " " + pb[6][1][2] + " | " + pb[7][1][0] + " " + pb[7][1][1] + " " + pb[7][1][2] + " | " + pb[8][1][0] + " " + pb[8][1][1] + " " + pb[8][1][2]);
-        System.out.println(pb[6][2][0] + " " + pb[6][2][1] + " " + pb[6][2][2] + " | " + pb[7][2][0] + " " + pb[7][2][1] + " " + pb[7][2][2] + " | " + pb[8][2][0] + " " + pb[8][2][1] + " " + pb[8][2][2]);
+    //@Override
+    public static void showBoard(int board[][]) {
+        System.out.println("\t   a b c  | d e f  | g h i");
+        System.out.println("\t |-------------------------|");
+        for(int row = 0; row < 9; row++){
+            System.out.print("\t" + (row + 1) + "| ");
+            for(int column = 0; column < 9; column++){
+                System.out.print(board[row][column] + " ");
+                if(column == 2 || column == 5){
+                    System.out.print(" | ");
+                }
+                if(column == 8) {
+                    System.out.print("|");
+                }
+            }
+            System.out.println("");
+            if(row == 2 || row == 5){
+                System.out.println("\t |-------------------------|");
+            }
+        }
+        System.out.println("\t |-------------------------|");
     }
 
     @Override
     public void testBoard() {
-        insertValues(this.answerBoard);
-        this.columnsValidation(answerBoard, 0, 2, 1, 4);
-        //this.matrixValidation(answerBoard, 0, 0, 0, 1);
-        showBoard(this.getAnswerBoard());
-    }
-
-    public void insertValues(int pb[][][]) {
-        for (int k = 0; k < pb.length; k++) {
-            for (int i = 0; i < this.size; i++) {
-                for (int j = 0; j < this.size; j++) {
-                    pb[k][i][j] = k;
-                }
-            }
-        }
-    }
+        //insertValues(this.answerBoard);
+        
+        showBoard(playerBoard);
+        //solveBoard(playerBoard);
+        //System.out.println("\n=======================\n");
+        //showBoard(playerBoard);
+        //this.isTryRight(answerBoard, 0, 0, 0, 1);
+        //this.creatAnswerBoard();
+    }    
 }
