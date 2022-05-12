@@ -34,16 +34,16 @@ public abstract class Board {
     }
     
     //Normal Methods    
-    //public abstract static boolean checkAll(int board[][], int rIndex, int cIndex, int attempt);
+    public abstract boolean checkAll(int board[][], int rIndex, int cIndex, int attempt);
     
-    //public abstract boolean checkOnRow(int board[][], int rIndex, int attempt);
+    public abstract boolean checkOnRow(int board[][], int rIndex, int attempt);
     
-    //public abstract boolean checkOnColumn(int board[][], int cIndex, int attempt);
+    public abstract boolean checkOnColumn(int board[][], int cIndex, int attempt);
     
-    //public abstract boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt);
+    public abstract boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt);
     
     //Methods that will be deleted when Grafic Interface gets build up.
-    //public abstract void showBoard(int board[][]);
+    public abstract void showBoard(int board[][]);
     
     public abstract void testBoard();
 }

@@ -50,13 +50,13 @@ public class DecimalBoard extends Board {
         }
         return false;
     }
-    //@Override
-    public static boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
+    @Override
+    public boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
         return !checkOnRow(board, rIndex, attempt) && !checkOnColumn(board, cIndex, attempt) && !checkOnMatrix(board, rIndex, cIndex, attempt);
     }
     
-    //@Override
-    public static boolean checkOnRow(int board[][], int rIndex, int attempt) {
+    @Override
+    public boolean checkOnRow(int board[][], int rIndex, int attempt) {
         for(int i = 0; i < 9; i++){
             if(board[rIndex][i]== attempt){
                 return true;
@@ -65,8 +65,8 @@ public class DecimalBoard extends Board {
         return false;
     }
     
-    //@Override
-    public static boolean checkOnColumn(int board[][], int cIndex, int attempt) {
+    @Override
+    public boolean checkOnColumn(int board[][], int cIndex, int attempt) {
         for(int i = 0; i < 9; i++){
             if(board[i][cIndex]== attempt){
                 return true;
@@ -75,8 +75,8 @@ public class DecimalBoard extends Board {
         return false;
     }
 
-    //@Override
-    public static boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt) {
+    @Override
+    public boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt) {
         int matrixRow = rIndex  - (rIndex % 3);
         int matrixColumn = cIndex  - (cIndex % 3);
         
@@ -112,8 +112,8 @@ public class DecimalBoard extends Board {
     }
     
     //Methods that will be deleted when Grafic Interface gets build up.
-    //@Override
-    public static void showBoard(int board[][]) {
+    @Override
+    public void showBoard(int board[][]) {
         System.out.println("\t   a b c  | d e f  | g h i");
         System.out.println("\t |-------------------------|");
         for(int row = 0; row < 9; row++){

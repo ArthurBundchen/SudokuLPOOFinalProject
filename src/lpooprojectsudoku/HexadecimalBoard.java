@@ -22,22 +22,22 @@ public class HexadecimalBoard extends Board{
     }
 
     //NEW
-    //@Override
+    @Override
     public boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
         return !checkOnRow(board, rIndex, attempt) && !checkOnColumn(board, cIndex, attempt) && !checkOnMatrix(board, rIndex, cIndex, attempt);
     }
     
-    //@Override
+    @Override
     public boolean checkOnRow(int board[][], int rIndex, int attempt) {
         return true;
     }
     
-    //@Override
+    @Override
     public boolean checkOnColumn(int board[][], int cIndex, int attempt) {
         return true;
     }
 
-    //@Override
+    @Override
     public boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt) {
         return true;
     }
@@ -47,7 +47,7 @@ public class HexadecimalBoard extends Board{
     }
     
     //Methods that will be deleted when Grafic Interface gets build up.
-    //@Override
+    @Override
     public void showBoard(int board[][]) {
         for(int row = 0; row < SIZE; row++){
             for(int column = 0; column < SIZE; column++){
