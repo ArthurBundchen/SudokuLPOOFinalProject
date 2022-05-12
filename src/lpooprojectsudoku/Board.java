@@ -45,5 +45,4 @@ public abstract class Board {
     //Methods that will be deleted when Grafic Interface gets build up.
     public abstract void showBoard(int board[][]);
     
-    public abstract void testBoard();
 }
