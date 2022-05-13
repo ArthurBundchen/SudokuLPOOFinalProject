@@ -16,26 +16,23 @@ public class Match {
     Scanner input = new Scanner(System.in);
     
     protected void menu(){
-        System.out.println("-------------------------------------");
-        System.out.println("========= BEM-VINDO AO JOGO =========");
-        System.out.println("-------------------------------------");
-        System.out.println("Digite o seu primeiro nome:");
-        this.player.setFirstName(input.next());
-        System.out.println("Digite o seu sobrenome:");
-        this.player.setLastName(input.next());
-        showBoardOptions();
-        option = input.nextInt();
-        //IMPLEMENTAR EXCESSÃO CASO O INPUT NÃO SEJA 1 OU 2
-        showLevelOptions();
-        level = input.nextInt();
+        Dboard.showBoard(Dboard.getAnswerBoard());
+        /*
+        menuHead();
+        showAndSetPlayerName();
+        showAndSetBoardOption();
+        showAndSetLevelOption();
         startMatch();
+        */
     }
+    
     private void startMatch(){
         System.out.println("\nBoa Sorte, " + player.getFirstName() + "!");
         if(option == 1){
             Dboard.setLevel(level);
             Hboard = null;
-            Dboard.creatAswerBoard(Dboard.getPlayerBoard()); //Isso deveria estar dentro do gerador de sudoku
+            //Dboard.creatAswerBoard(Dboard.getPlayerBoard()); //Isso deveria estar dentro do gerador de sudoku
+            //VER PQ TA DANDO ERRO
             Dboard.showBoard(Dboard.getPlayerBoard());
             while(true){
                 placement();
@@ -61,20 +58,39 @@ public class Match {
         }
     }
     
-    private void showBoardOptions(){
+    private void menuHead(){
+        System.out.println("-------------------------------------");
+        System.out.println("========= BEM-VINDO AO JOGO =========");
+        System.out.println("-------------------------------------");
+    }
+    
+    private void showAndSetPlayerName(){
+        System.out.println("Digite o seu primeiro nome:");
+        this.player.setFirstName(input.next());
+        System.out.println("Digite o seu sobrenome:");
+        this.player.setLastName(input.next());
+    }
+    
+    private void showAndSetBoardOption(){
         System.out.println("\n====== ESCOLHA O TIPO DE SUDOKU ======\n");
         System.out.println("    1- SUDOKU ORIGINAL (9x9)\n" +
                            "    2- SUDOKU HEXADECIMAL (16x16)\n");
         System.out.print("Digite a opção desejada (1 ou 2): ");
+        option = input.nextInt();
+        //IMPLEMENTAR EXCEÇÃO CASO O INPUT NÃO SEJA 1 OU 2
         
     }
     
-    private void showLevelOptions(){
+    private void showAndSetLevelOption(){
         System.out.println("\n====== ESCOLHA A DIFICULDADE ======\n");
         System.out.println("    1- FACIL \n" +
                            "    2- INTERMEDIARIO \n" +
-                           "    3- DIFICIL \n");
-        System.out.print("Digite a opção desejada (1, 2 ou 3): ");
+                           "    3- DIFICIL \n" +
+                           "    4- SUDOKU MALUCO");
+        System.out.print("Digite a opção desejada (1, 2, 3 ou 4): ");
+        level = input.nextInt();
+        //Mudar para get e set de level
+        //IMPLEMENTAR EXCEÇÃO CASO O INPUT NÃO SEJA 1, 2, 3 OU 4
     }
     
     public void placement() {

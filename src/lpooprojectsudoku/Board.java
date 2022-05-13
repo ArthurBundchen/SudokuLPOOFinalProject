@@ -55,7 +55,6 @@ public abstract class Board implements interfacepkg.BoardInterface{
     public abstract boolean checkOnMatrix(int board[][],int rIndex, int cIndex, int attempt);
     
     //Methods that will be deleted when Grafic Interface gets build up.
-
     @Override
     public abstract void showBoard(int board[][]);
     
