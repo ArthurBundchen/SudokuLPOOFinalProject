@@ -19,6 +19,14 @@ public class HexadecimalBoard extends Board{
     }
     
     //Getters & Setters
+    public int getSIZE() {
+        return SIZE;
+    }
+
+    public int[][] getAnswerBoard() {
+        return answerBoard;
+    }
+    
     public boolean[][] getPbLockedPosition() {
         return pbLockedPosition;
     }
@@ -65,17 +73,57 @@ public class HexadecimalBoard extends Board{
         return false;
     }
     
-    public boolean hasWon(){
-        if(isBoardFull(playerBoard)){
+    public boolean hasWon(int board[][]){
+        if(isBoardFull(board)){
             for (int row = 0; row < SIZE; row++) {
                 for (int column = 0; column < SIZE; column++) {
-                    if(checkAll(playerBoard, row, column, playerBoard[row][column])){
+                    if(board[row][column] == answerBoard[row][column]){
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+    
+    public void creatPlayerBoard(int board[][], int dificult){
+        
+        //Vai preencher todos os valores no playerBoard
+        for (int row = 0; row < SIZE; row++) {
+                for (int column = 0; column < SIZE; column++) {
+                    this.playerBoard[row][column] = this.answerBoard[row][column];
+            }
+        }
+        int blanks = 0;
+        int row = 0, column = 0;
+        Random rand = new Random();
+        
+        //Vai determinar de acordo com a dificuldade selecionada quantas celulas estarao vazias
+        switch(dificult){
+            case 1:
+                blanks = 139;
+                break;
+            case 2:
+                blanks = 162;
+                break;
+            case 3:
+                blanks = 185;
+                break;
+            default:
+                break;
+        }
+        
+        //Vai esvaziar determinada quantidade de celulas aleatoriamente
+        while(blanks > 0){
+            row = rand.nextInt(16);
+            column = rand.nextInt(16);
+            if(board[row][column] != 0){
+                playerBoard[row][column] = 0;
+                pbLockedPosition[row][column] = true;
+                blanks--;
+            }
+        }
+        
     }
     
     public boolean solveBoard(int board[][]){
@@ -100,7 +148,7 @@ public class HexadecimalBoard extends Board{
     }
     
     //Methods to creat answerBoard
-    public int[][] answerBoardCreator() {
+    public void answerBoardCreator() {
         Random random = new Random();
         int mix = random.nextInt(400) + 100;
         int[][] inicialBoard = new int[][] {{12,  2,  5,  7,  4, 11,  9, 16,  6, 15, 10,  1, 13,  3,  8, 14}, 
@@ -125,7 +173,6 @@ public class HexadecimalBoard extends Board{
             answerBoard = groupRowSwitch(answerBoard);
             answerBoard = groupColumnSwitch(answerBoard);
         }
-        return answerBoard;
     }
     
     public int[][] rowSwitch(int[][] board){
@@ -240,7 +287,17 @@ public class HexadecimalBoard extends Board{
         return board;
     }
     
-    //Metodos herdados da superclasse Board
+    public int[] availableNumbers(int[][]board, int row, int column){
+        int[] available = new int[SIZE];
+        for(int numToTry = 1; numToTry <= SIZE; numToTry++){
+            if(checkAll(board, row, column, numToTry)){
+                available[numToTry - 1] = numToTry;
+            }
+        }
+        return available;
+    }
+        
+    //Methods inherited from superclass Board
     @Override
     public boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
         return !checkOnRow(board, rIndex, attempt) && !checkOnColumn(board, cIndex, attempt) && !checkOnMatrix(board, rIndex, cIndex, attempt);
@@ -272,7 +329,7 @@ public class HexadecimalBoard extends Board{
         int matrixColumn = cIndex  - (cIndex % 4);
         
         for(int i = matrixRow; i < matrixRow + 4; i++){
-            for(int j = matrixColumn; i < matrixColumn + 4; i++){
+            for(int j = matrixColumn; j < matrixColumn + 4; j++){
                 if(board[i][j] == attempt){
                     return true;
                 }
@@ -283,26 +340,33 @@ public class HexadecimalBoard extends Board{
     
     @Override
     public void showBoard(int board[][]) {
-        System.out.println("\n======================= SUDOKU =======================\n");
-        System.out.println("\t    A B C  | D E F  | G H I");
-        System.out.println("\t  ---------------------------------------");
+        System.out.println("\n\t============================= SUDOKU =============================\n");
+        System.out.println("\t      A  B  C  D  |  E  F  G  H  |  I  J  K  L  |  M  N  O  P");
+        System.out.println("\t    ----------------------------------------------------------");
         for(int row = 0; row < SIZE; row++){
-            System.out.print("\t" + (row + 1) + " | ");
+            System.out.print("\t");
+            if(row <= 8){
+                System.out.print(" ");
+            }
+            System.out.print((row + 1) + " | ");
             for(int column = 0; column < SIZE; column++){
+                if(board[row][column] < 10){
+                    System.out.print(" ");
+                }
                 System.out.print(board[row][column] + " ");
                 if(column == 3 || column == 7 || column == 11){
                     System.out.print(" | ");
                 }
                 if(column == 15) {
-                    System.out.print("|");
+                    System.out.println("|");
                 }
             }
-            System.out.println("");
+            
             if(row == 3 || row == 7 || row == 11){
-                System.out.println("\t  |----------+----------+---------|");
+                System.out.println("\t   |--------------+--------------+--------------+-------------|");
             }
         }
-        System.out.println("\t  -------------------------------------");
+        System.out.println("\t    ----------------------------------------------------------");
     }
 
 }

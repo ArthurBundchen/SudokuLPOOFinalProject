@@ -17,10 +17,12 @@ public class DecimalBoard extends Board {
     //Constructor
     public DecimalBoard(int level) {
         super(level);
-        answerBoardCreator();
     }
 
     //Getters & Setters
+    public int getSIZE() {
+        return SIZE;
+    }
 
     public int[][] getAnswerBoard() {
         return answerBoard;
@@ -48,6 +50,7 @@ public class DecimalBoard extends Board {
         return pbLockedPosition;
     }
     
+    //Normal Methods
     public void setAttempt(int board[][], int row, int column, int attempt){
         if(attempt >= 1 && attempt <= SIZE){
             playerBoard[row][column] = attempt;
@@ -85,7 +88,43 @@ public class DecimalBoard extends Board {
         return false;
     }
     
-    public void creatPlayerBoard(int board[][]){
+    public void creatPlayerBoard(int board[][], int dificult){
+        
+        //Vai preencher todos os valores no playerBoard
+        for (int row = 0; row < SIZE; row++) {
+                for (int column = 0; column < SIZE; column++) {
+                    this.playerBoard[row][column] = this.answerBoard[row][column];
+            }
+        }
+        int blanks = 0;
+        int row = 0, column = 0;
+        Random rand = new Random();
+        
+        //Vai determinar de acordo com a dificuldade selecionada quantas celulas estarao vazias
+        switch(dificult){
+            case 1:
+                blanks = 43;
+                break;
+            case 2:
+                blanks = 51;
+                break;
+            case 3:
+                blanks = 69;
+                break;
+            default:
+                break;
+        }
+        
+        //Vai esvaziar determinada quantidade de celulas aleatoriamente
+        while(blanks > 0){
+            row = rand.nextInt(9);
+            column = rand.nextInt(9);
+            if(board[row][column] != 0){
+                playerBoard[row][column] = 0;
+                pbLockedPosition[row][column] = true;
+                blanks--;
+            }
+        }
         
     }
     
@@ -111,18 +150,31 @@ public class DecimalBoard extends Board {
     }
     
     //Methods to creat answerBoard
-    
-    public int[][] answerBoardCreator() {
+    public void answerBoardCreator() {
+        int[][] inicialBoard = new int[][] {{ 2, 3, 5, 1, 4, 7, 9, 8, 6}, 
+                                            { 4, 1, 8, 9, 6, 5, 7, 2, 3},
+                                            { 6, 9, 7, 2, 8, 3, 1, 4, 5},
+                                            
+                                            { 9, 8, 6, 5, 7, 4, 2, 3, 1},
+                                            { 5, 7, 3, 8, 1, 2, 4, 6, 9},
+                                            { 1, 4, 2, 6, 3, 9, 8, 5, 7},
+                                            
+                                            { 7, 5, 9, 3, 2, 8, 6, 1, 4},
+                                            { 8, 6, 4, 7, 5, 1, 3, 9, 2},
+                                            { 3, 2, 1, 4, 9, 6, 5, 7, 8}};
         Random random = new Random();
         int mix = random.nextInt(1000) + 100;
-        solveBoard(answerBoard);
         for(int i = 0; i < mix; i++){
-            answerBoard = rowSwitch(answerBoard);
-            answerBoard = columnSwitch(answerBoard);
-            answerBoard = groupRowSwitch(answerBoard);
-            answerBoard = groupColumnSwitch(answerBoard);
+            inicialBoard = rowSwitch(inicialBoard);
+            inicialBoard = columnSwitch(inicialBoard);
+            inicialBoard = groupRowSwitch(inicialBoard);
+            inicialBoard = groupColumnSwitch(inicialBoard);
         }
-        return answerBoard;
+        for (int row = 0; row < SIZE; row++) {
+                for (int column = 0; column < SIZE; column++) {
+                    this.answerBoard[row][column] = inicialBoard[row][column];
+            }
+        }
     }
     
     public int[][] rowSwitch(int[][] board){
@@ -235,7 +287,17 @@ public class DecimalBoard extends Board {
         return board;
     }
     
-    //Metodos herdados da superclasse Board
+    public int[] availableNumbers(int[][]board, int row, int column){
+        int[] available = new int[SIZE];
+        for(int numToTry = 1; numToTry <= SIZE; numToTry++){
+            if(checkAll(board, row, column, numToTry)){
+                available[numToTry - 1] = numToTry;
+            }
+        }
+        return available;
+    }
+    
+    //Methodos inherited from superclass Board
     @Override
     public boolean checkAll(int board[][], int rIndex, int cIndex, int attempt){
         return !checkOnRow(board, rIndex, attempt) && !checkOnColumn(board, cIndex, attempt) && !checkOnMatrix(board, rIndex, cIndex, attempt);
@@ -267,7 +329,7 @@ public class DecimalBoard extends Board {
         int matrixColumn = cIndex  - (cIndex % 3);
         
         for(int i = matrixRow; i < matrixRow + 3; i++){
-            for(int j = matrixColumn; i < matrixColumn + 3; i++){
+            for(int j = matrixColumn; j < matrixColumn + 3; j++){
                 if(board[i][j] == attempt){
                     return true;
                 }
