@@ -93,7 +93,7 @@ public class DecimalBoard extends Board {
         //Vai preencher todos os valores no playerBoard
         for (int row = 0; row < SIZE; row++) {
                 for (int column = 0; column < SIZE; column++) {
-                    this.playerBoard[row][column] = this.answerBoard[row][column];
+                    this.playerBoard[row][column] = board[row][column];
             }
         }
         int blanks = 0;
@@ -110,6 +110,9 @@ public class DecimalBoard extends Board {
                 break;
             case 3:
                 blanks = 69;
+                break;
+            case 4:
+                blanks = 51;
                 break;
             default:
                 break;
@@ -128,6 +131,21 @@ public class DecimalBoard extends Board {
         
     }
     
+    public void reSetPbLockedPosions(boolean state){
+        for (int row = 0; row < SIZE; row++) {
+                for (int column = 0; column < SIZE; column++) {
+                    this.pbLockedPosition[row][column] = state;
+            }
+        }
+    }
+    
+    public void crazySudoku(){
+        this.answerBoard = rowSwitch(this.answerBoard);
+        this.answerBoard = columnSwitch(this.answerBoard);
+        reSetPbLockedPosions(false);
+        creatPlayerBoard(this.answerBoard, 4);
+        
+    }
     public boolean solveBoard(int board[][]){
         for(int row = 0; row < SIZE; row++){
             for(int column = 0; column < SIZE; column++){

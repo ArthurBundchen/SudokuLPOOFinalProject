@@ -1,6 +1,6 @@
 package lpooprojectsudoku;
 
-import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -14,6 +14,7 @@ public class Match {
     private int option;
     private int level;
     Scanner input = new Scanner(System.in);
+    Random rand = new Random();
     
     protected void menu(){
         menuHead();
@@ -24,6 +25,7 @@ public class Match {
     }
     
     private void startMatch(){
+        int luckyNumber;
         System.out.println("\nBoa Sorte, " + player.getFirstName() + "!");
         if(option == 1){
             Dboard.setLevel(this.level);
@@ -36,6 +38,15 @@ public class Match {
             while(true){
                 helpOption();
                 placement();
+                if(level == 4){
+                    luckyNumber = rand.nextInt(100) + 1;
+                    if(luckyNumber <= 5){
+                        Dboard.crazySudoku();
+                        System.out.println(" ================== QUE AZAR! ==================");
+                        System.out.println(" == O tabuleiro mudou, tente ser mais rápido! ==");
+                        System.out.println(" ===============================================");
+                    }
+                }
                 Dboard.showBoard(Dboard.getPlayerBoard());
                 if(Dboard.hasWon(Dboard.getPlayerBoard())){
                     System.out.println("================================================");
@@ -55,6 +66,15 @@ public class Match {
             while(true){
                 helpOption();
                 placement();
+                if(level == 4){
+                    luckyNumber = rand.nextInt(100) + 1;
+                    if(luckyNumber <= 2){
+                        Hboard.crazySudoku();
+                        System.out.println("\n\n\n\n\t\t ================== QUE AZAR! ==================");
+                        System.out.println("\t\t == O tabuleiro mudou, tente ser mais rápido! ==");
+                        System.out.println("\t\t ===============================================");
+                    }
+                }
                 Hboard.showBoard(Hboard.getPlayerBoard());
                 if(Hboard.hasWon(Hboard.getPlayerBoard())){
                     System.out.println("================================================");
@@ -147,12 +167,13 @@ public class Match {
     }
     
     public void placement() {
-        System.out.println("\nOnde você deseja jogar?");
-        System.out.print("Linha (1, 2...,9): ");
-        int row = input.nextInt() - 1;
-        System.out.print("Coluna (A, B..., I): ");
-        int column = columnCharToInt(input.next().toUpperCase().charAt(0));
+        int row = 0, column = 0;
         if(option == 1){
+            System.out.println("\nOnde você deseja jogar?");
+            System.out.print("Linha (1, 2...,9): ");
+            row = input.nextInt() - 1;
+            System.out.print("Coluna (A, B..., I): ");
+            column = columnCharToInt(input.next().toUpperCase().charAt(0));
             if(Dboard.getPbLockedPosition()[row][column]){
                 System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
                 int attempt = input.nextInt();
@@ -163,6 +184,11 @@ public class Match {
                 System.out.println("=====================================================");
             }
         } else if(option == 2){
+            System.out.println("\nOnde você deseja jogar?");
+            System.out.print("Linha (1, 2...,16): ");
+            row = input.nextInt() - 1;
+            System.out.print("Coluna (A, B..., P): ");
+            column = columnCharToInt(input.next().toUpperCase().charAt(0));
             if(Hboard.getPbLockedPosition()[row][column]){
                 System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
                 int attempt = input.nextInt();

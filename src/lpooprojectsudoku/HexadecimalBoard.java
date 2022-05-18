@@ -91,7 +91,7 @@ public class HexadecimalBoard extends Board{
         //Vai preencher todos os valores no playerBoard
         for (int row = 0; row < SIZE; row++) {
                 for (int column = 0; column < SIZE; column++) {
-                    this.playerBoard[row][column] = this.answerBoard[row][column];
+                    this.playerBoard[row][column] = board[row][column];
             }
         }
         int blanks = 0;
@@ -109,6 +109,9 @@ public class HexadecimalBoard extends Board{
             case 3:
                 blanks = 185;
                 break;
+            case 4:
+                blanks = 162;
+                break;
             default:
                 break;
         }
@@ -123,6 +126,22 @@ public class HexadecimalBoard extends Board{
                 blanks--;
             }
         }
+        
+    }
+    
+    public void reSetPbLockedPosions(boolean state){
+        for (int row = 0; row < SIZE; row++) {
+                for (int column = 0; column < SIZE; column++) {
+                    this.pbLockedPosition[row][column] = state;
+            }
+        }
+    }
+    
+    public void crazySudoku(){
+        this.answerBoard = rowSwitch(this.answerBoard);
+        this.answerBoard = columnSwitch(this.answerBoard);
+        reSetPbLockedPosions(false);
+        creatPlayerBoard(this.answerBoard, 4);
         
     }
     
