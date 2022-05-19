@@ -6,24 +6,15 @@ package lpooprojectsudoku;
  */
 
 public class Player {
-    private String firstName;
-    private String lastName;
+    private String name;
     private int recorde; //How many seconds took for the player to finish.
     
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String firstName) {
+        this.name = firstName;
     }
 
     public int getRecorde() {

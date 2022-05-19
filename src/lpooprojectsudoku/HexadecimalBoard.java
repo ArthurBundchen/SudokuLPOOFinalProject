@@ -359,11 +359,10 @@ public class HexadecimalBoard extends Board{
     
     @Override
     public void showBoard(int board[][]) {
-        System.out.println("\n\t============================= SUDOKU =============================\n");
-        System.out.println("\t      A  B  C  D  |  E  F  G  H  |  I  J  K  L  |  M  N  O  P");
-        System.out.println("\t    ----------------------------------------------------------");
+        System.out.println("\n============================= SUDOKU =============================\n");
+        System.out.println("      A  B  C  D  |  E  F  G  H  |  I  J  K  L  |  M  N  O  P");
+        System.out.println("    ----------------------------------------------------------");
         for(int row = 0; row < SIZE; row++){
-            System.out.print("\t");
             if(row <= 8){
                 System.out.print(" ");
             }
@@ -382,10 +381,10 @@ public class HexadecimalBoard extends Board{
             }
             
             if(row == 3 || row == 7 || row == 11){
-                System.out.println("\t   |--------------+--------------+--------------+-------------|");
+                System.out.println("   |--------------+--------------+--------------+-------------|");
             }
         }
-        System.out.println("\t    ----------------------------------------------------------");
+        System.out.println("    ----------------------------------------------------------");
     }
 
 }

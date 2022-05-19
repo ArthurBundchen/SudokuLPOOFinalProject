@@ -146,6 +146,7 @@ public class DecimalBoard extends Board {
         creatPlayerBoard(this.answerBoard, 4);
         
     }
+    
     public boolean solveBoard(int board[][]){
         for(int row = 0; row < SIZE; row++){
             for(int column = 0; column < SIZE; column++){

@@ -1,5 +1,7 @@
 package lpooprojectsudoku;
 
+import java.util.Scanner;
+
 /**
  *
  * @author arthu

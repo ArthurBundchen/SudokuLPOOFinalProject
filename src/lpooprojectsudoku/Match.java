@@ -2,6 +2,8 @@ package lpooprojectsudoku;
 
 import java.util.Random;
 import java.util.Scanner;
+import exceptionspkg.*;
+import java.util.InputMismatchException;
 
 /**
  *
@@ -26,7 +28,7 @@ public class Match {
     
     private void startMatch(){
         int luckyNumber;
-        System.out.println("\nBoa Sorte, " + player.getFirstName() + "!");
+        System.out.println("\n    Boa Sorte, " + player.getName() + "!");
         if(option == 1){
             Dboard.setLevel(this.level);
             Hboard = null;
@@ -87,52 +89,129 @@ public class Match {
     }
     
     private void menuHead(){
-        System.out.println("-------------------------------------");
-        System.out.println("========= BEM-VINDO AO JOGO =========");
-        System.out.println("-------------------------------------");
+        System.out.println("    -------------------------------------------");
+        System.out.println("    ============ BEM-VINDO AO JOGO ============");
+        System.out.println("    -------------------------------------------");
     }
     
     private void showAndSetPlayerName(){
-        System.out.println("Digite o seu primeiro nome:");
-        this.player.setFirstName(input.next());
-        System.out.println("Digite o seu sobrenome:");
-        this.player.setLastName(input.next());
+        String localName;
+        while(true){
+            try{
+                Scanner nameScanner = new Scanner(System.in);
+                System.out.print("    Digite o seu nome: ");
+                localName = nameScanner.next();
+                isNameValid(localName);
+                this.player.setName(localName);
+                break;
+            } catch(InvalidAttributeException iae){
+                System.out.println("\n" + iae.getMessage());
+            }
+        }
     }
     
     private void showAndSetBoardOption(){
-        System.out.println("\n====== ESCOLHA O TIPO DE SUDOKU ======\n");
-        System.out.println("    1- SUDOKU ORIGINAL (9x9)\n" +
-                           "    2- SUDOKU HEXADECIMAL (16x16)\n");
-        System.out.print("Digite a opção desejada (1 ou 2): ");
-        option = input.nextInt();
-        //IMPLEMENTAR EXCEÇÃO CASO O INPUT NÃO SEJA 1 OU 2
-        
+        int localOption;
+        while(true){
+            try{
+                Scanner optionScanner = new Scanner(System.in);
+                System.out.println("\n    ======== ESCOLHA O TIPO DE SUDOKU =========\n");
+                System.out.println("    1- SUDOKU ORIGINAL (9x9)\n" +
+                                   "    2- SUDOKU HEXADECIMAL (16x16)\n");
+                //System.out.print("    Digite a opção desejada (1 ou 2): ");
+                System.out.print("    ");
+                localOption = optionScanner.nextInt();
+                isOptionValid(localOption);
+                this.option = localOption;
+                break;
+            } catch(InvalidAttributeException iae){
+                System.out.println("\n" + iae.getMessage());
+            } catch(InputMismatchException ime){ //Tratamento se o usuario digitar algo que não seja um numero
+                    System.out.println("\n    ===========================================\n" +
+                                       "    Por favor, a opção deve ser um número." +
+                                       "\n    ===========================================\n");
+            }
+        }
     }
     
     private void showAndSetLevelOption(){
-        System.out.println("\n====== ESCOLHA A DIFICULDADE ======\n");
-        System.out.println("    1- FACIL \n" +
-                           "    2- INTERMEDIARIO \n" +
-                           "    3- DIFICIL \n" +
-                           "    4- SUDOKU MALUCO");
-        System.out.print("Digite a opção desejada (1, 2, 3 ou 4): ");
-        this.level = input.nextInt();
-        //Mudar para get e set de level
-        //IMPLEMENTAR EXCEÇÃO CASO O INPUT NÃO SEJA 1, 2, 3 OU 4
+        int localLevel;
+        while(true){
+            try{
+                Scanner levelScanner = new Scanner(System.in);
+                System.out.println("\n    =========== ESCOLHA A DIFICULDADE ===========\n");
+                System.out.println("    1- FACIL \n" +
+                                   "    2- INTERMEDIARIO \n" +
+                                   "    3- DIFICIL \n" +
+                                   "    4- SUDOKU MALUCO\n");
+                //System.out.print("    Digite a opção desejada (1, 2, 3 ou 4): ");
+                System.out.print("    ");
+                localLevel = levelScanner.nextInt();
+                isLevelValid(localLevel);
+                this.level = localLevel;
+                break;
+            } catch(InvalidAttributeException iae){
+                System.out.println("\n" + iae.getMessage());
+            } catch(InputMismatchException ime){ //Tratamento se o usuario digitar algo que não seja um numero
+                    System.out.println("\n    =============================================\n" +
+                                       "    Por favor, a opção deve ser um número." +
+                                       "\n    =============================================\n");
+            }
+        }
     }
     
     private void helpOption(){
-        System.out.print("\nDeseja ajuda? (S/N): ");
-        char answer = input.next().toUpperCase().charAt(0);
+        int row = 0, column = 0;
+        char localHelpOption, answer;
+        while(true){
+            try{
+                Scanner levelScanner = new Scanner(System.in);
+                System.out.print("\nDeseja ajuda? (S/N): ");
+                localHelpOption = levelScanner.next().toUpperCase().charAt(0);
+                isHelpOptionValid(localHelpOption);
+                answer = localHelpOption;
+                break;
+            } catch(InvalidAttributeException iae){
+                System.out.println("\n" + iae.getMessage());
+            }
+        }
         if(answer == 'S'){
-            System.out.println("\nEm qual cálula?");
-            System.out.print("Linha (1, 2...,9): ");
-            int row = input.nextInt() - 1;
-            System.out.print("Coluna (A, B..., I): ");
-            int column = columnCharToInt(input.next().toUpperCase().charAt(0));
+            System.out.println("\nEm qual célula?");
+            while(true){
+                Scanner rowsScanner = new Scanner(System.in);
+                row = 0;
+                try{
+                    System.out.print("Linha (1, 2...,9): ");
+                    row = rowsScanner.nextInt() - 1;
+                    isRowValid(row);
+                    break;
+                } catch(InvalidAttributeException iae){ //Tratamento se o valor da linha está entre 1 e 9
+                    System.out.println(iae.getMessage());
+                    
+                } catch(InputMismatchException ime){ //Tratamento se o usuario digitar algo que não seja um numero
+                    System.out.println("Por favor, o valor da linha deve ser um número.");
+                }
+            }
+            while(true){
+                Scanner columnScanner = new Scanner(System.in);
+                column = 0;
+                try{
+                    System.out.print("Coluna (A, B..., I): ");
+                    column = columnCharToInt(columnScanner.next().toUpperCase().charAt(0));
+                    isColumnValid(column);
+                    break;
+                } catch(InvalidAttributeException iae){ //Tratamento se o valor da coluna está entre 1 e 9
+                    System.out.println(iae.getMessage());
+                    
+                } catch(InputMismatchException ime){ //Tratamento se o usuario digitar algo que não seja um letra
+                    System.out.println("Por favor, o valor da coluna deve ser uma letra.");
+                }
+            }
             if(option == 1){
                 Dboard.availableNumbers(Dboard.getPlayerBoard(), row, column);
-                if(Dboard.getPbLockedPosition()[row][column]){
+                
+                try{ //Tratamento de exceção: LockedPositionException
+                    isPositionLocked(Dboard.getPbLockedPosition()[row][column]);
                     System.out.println("=====================================================");
                     System.out.print("\nOs números disponíveis para a célula selecionada são: ");
                     for(int i = 0; i < Dboard.getSIZE() ;i++){
@@ -141,14 +220,14 @@ public class Match {
                         }
                     }
                     System.out.println("\n=====================================================");
-                } else {
-                    System.out.println("=====================================================");
-                    System.out.println("Essa posição e fixa e já contem a resposta correta.");
-                    System.out.println("=====================================================");
+                } catch(LockedPositionException lpe){
+                    System.out.println("\n" + lpe.getMessage());
                 }
             } else if(option == 2){
                 Hboard.availableNumbers(Hboard.getPlayerBoard(), row, column);
-                if(Hboard.getPbLockedPosition()[row][column]){
+                
+                try{ //Tratamento de exceção: LockedPositionException
+                    isPositionLocked(Hboard.getPbLockedPosition()[row][column]);
                     System.out.println("=====================================================");
                     System.out.print("\nOs números disponíveis para a célula selecionada são: ");
                     for(int i = 0; i < Hboard.getSIZE() ;i++){
@@ -157,50 +236,77 @@ public class Match {
                         }
                     }
                     System.out.println("\n=====================================================");
-                } else {
-                    System.out.println("=====================================================");
-                    System.out.println("Essa posição e fixa e já contem a resposta correta.");
-                    System.out.println("=====================================================");
+                } catch(LockedPositionException lpe){
+                    System.out.println("\n" + lpe.getMessage());
                 }
             }
         }
     }
     
     public void placement() {
-        int row = 0, column = 0;
-        if(option == 1){
-            System.out.println("\nOnde você deseja jogar?");
-            System.out.print("Linha (1, 2...,9): ");
-            row = input.nextInt() - 1;
-            System.out.print("Coluna (A, B..., I): ");
-            column = columnCharToInt(input.next().toUpperCase().charAt(0));
-            if(Dboard.getPbLockedPosition()[row][column]){
-                System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
-                int attempt = input.nextInt();
-                addTry(row, column, attempt);
-            } else{
-                System.out.println("=====================================================");
-                System.out.println("ERRO: Essa posição é bloquada e não pode ser alterada");
-                System.out.println("=====================================================");
-            }
-        } else if(option == 2){
-            System.out.println("\nOnde você deseja jogar?");
-            System.out.print("Linha (1, 2...,16): ");
-            row = input.nextInt() - 1;
-            System.out.print("Coluna (A, B..., P): ");
-            column = columnCharToInt(input.next().toUpperCase().charAt(0));
-            if(Hboard.getPbLockedPosition()[row][column]){
-                System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
-                int attempt = input.nextInt();
-                addTry(row, column, attempt);
-            } else{
-                System.out.println("=====================================================");
-                System.out.println("ERRO: Essa posição é bloquada e não pode ser alterada");
-                System.out.println("=====================================================");
+        int row = 0, column = 0, attempt = 0;
+        System.out.println("\nOnde você deseja jogar?");
+        while(true) {
+            Scanner rowsScanner = new Scanner(System.in);
+            row = 0;
+            try {
+                System.out.print("Linha (1, 2...,9): ");
+                row = rowsScanner.nextInt() - 1;
+                isRowValid(row);
+                break;
+            } catch (InvalidAttributeException iae) { //Tratamento se o valor da linha está entre 1 e 9
+                System.out.println(iae.getMessage());
+
+            } catch (InputMismatchException ime) { //Tratamento se o usuario digitar algo que não seja um numero
+                System.out.println("Por favor, o valor da linha deve ser um número.");
             }
         }
-        
-        
+        while(true) {
+            Scanner columnScanner = new Scanner(System.in);
+            column = 0;
+            try {
+                System.out.print("Coluna (A, B..., I): ");
+                column = columnCharToInt(columnScanner.next().toUpperCase().charAt(0));
+                isColumnValid(column);
+                break;
+            } catch (InvalidAttributeException iae) { //Tratamento se o valor da coluna está entre 1 e 9
+                System.out.println(iae.getMessage());
+
+            } catch (InputMismatchException ime) { //Tratamento se o usuario digitar algo que não seja um letra
+                System.out.println("Por favor, o valor da coluna deve ser uma letra.");
+            }
+        }
+        if(option == 1){
+            try { //Tratamento de excessão: LockedPositionException
+                isPositionLocked(Dboard.getPbLockedPosition()[row][column]);
+                System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
+                attempt = input.nextInt();
+            } catch(LockedPositionException lpe){
+                System.out.println("\n" + lpe.getMessage());
+            }
+            try { //Tratamento de excessão: WrongAttemptException
+                addTry(row, column, attempt);
+            } catch(WrongAttemptException wat){
+                System.out.println("\n" + wat.getMessage());
+                //Mesmo errado tem que adicionar a jogada:
+                Dboard.setAttempt(Dboard.getPlayerBoard(), row, column, attempt);
+            }
+        } else if(option == 2){
+            try{ //Tratamento de excessão: LockedPositionException
+                isPositionLocked(Hboard.getPbLockedPosition()[row][column]);
+                System.out.print("\nQual sua tentativa? (1, 2, ...9): ");
+                attempt = input.nextInt();
+            } catch(LockedPositionException lpe){
+                System.out.println("\n" + lpe.getMessage());
+            }
+            try{ //Tratamento de excessão: WrongAttemptException
+                addTry(row, column, attempt);
+            } catch(WrongAttemptException wat){
+                System.out.println("\n" + wat.getMessage());
+                //Mesmo errado tem que adicionar a jogada:
+                Hboard.setAttempt(Hboard.getPlayerBoard(), row, column, attempt);
+            }
+        }
     }
     
     public int columnCharToInt(char column){
@@ -256,29 +362,95 @@ public class Match {
                 finalColumn = 15;
                 break;
             default:
-                //ADICIONAR EXCEPTION
                 break;
         }
         return finalColumn;
     }
         
-    public void addTry(int row, int column, int attempt){
+    public void addTry(int row, int column, int attempt) throws WrongAttemptException{
         if(option == 1){ //Dboard
-            if(!Dboard.checkAll(Dboard.getPlayerBoard(), row, column, attempt)){
-                System.out.println("=====================================================");
-                System.out.println("AVISO: Hmmm... Sua jogada está errada!");
-                System.out.println("=====================================================");
+            
+            if(!Dboard.checkAll(Dboard.getPlayerBoard(), row, column, attempt) && attempt != 0){ //Caso entre aqui lançará WrongAttemptException
+                throw new WrongAttemptException("\n=====================================================\n" +
+                                                "\tAVISO: Hmmm... Sua jogada está errada!\n" +
+                                                "=====================================================\n");
             }
             Dboard.setAttempt(Dboard.getPlayerBoard(), row, column, attempt);
+            
         } else if(option == 2){ // Hboard
-            if(Hboard.getPbLockedPosition()[row][column]){
-                if(!Hboard.checkAll(Hboard.getPlayerBoard(), row, column, attempt)){
-                    System.out.println("=====================================================");
-                    System.out.println("AVISO: Hmmm... Sua jogada está errada!");
-                    System.out.println("=====================================================");
-                }
-                Hboard.setAttempt(Hboard.getPlayerBoard(), row, column, attempt);
+            
+            if(!Hboard.checkAll(Hboard.getPlayerBoard(), row, column, attempt) && attempt != 0){ //Caso entre aqui lançará WrongAttemptException
+                throw new WrongAttemptException("\n=====================================================\n" +
+                                                "\tAVISO: Hmmm... Sua jogada está errada!\n" +
+                                                "=====================================================\n");
             }
+            Hboard.setAttempt(Hboard.getPlayerBoard(), row, column, attempt);
+            
+        }
+    }
+    
+    public void isPositionLocked(boolean value) throws LockedPositionException{
+        if(!value){
+            throw new LockedPositionException("\n======================================================\n" +
+                                              "AVISO: Essa posição é bloquada e não pode ser alterada\n" +
+                                              "======================================================\n");
+        }
+    }
+    
+    public void isRowValid(int row) throws InvalidAttributeException{
+        if(option == 1){
+            if(row < 0 || row > 8){
+                throw new InvalidAttributeException("\nValor de linha inválido, por favor esconha uma linha de 1 a 9!\n");
+            }
+        } else if(option == 2){
+            if(row < 0 || row > 15){
+                throw new InvalidAttributeException("\nValor de linha inválido, por favor esconha uma linha de 1 a 16!\n");
+            }
+        }
+    }
+    
+    public void isColumnValid(int column) throws InvalidAttributeException{
+        if(option == 1){
+            if(column < 0 || column > 8){
+                throw new InvalidAttributeException("\nValor de coluna inválido, por favor esconha uma coluna de A à I!\n");
+            }
+        } else if(option == 2){
+            if(column < 0 || column > 15){
+                throw new InvalidAttributeException("\nValor de coluna inválido, por favor esconha uma coluna de A à P!\n");
+            }
+        }
+    }
+    
+    public void isNameValid(String name) throws InvalidAttributeException{
+        if(name.length() < 5){
+            
+            throw new InvalidAttributeException("\n    ===========================================\n" +
+                                                "    Nome curto. Digite ao menos 5 caracteres.\n" +
+                                                "    ===========================================\n");
+        }
+    }
+    
+    public void isOptionValid(int opt) throws InvalidAttributeException{
+        if(!(opt == 1 || opt == 2)){
+            throw new InvalidAttributeException("\n    ===========================================\n" +
+                                                "    Por favor, escolha uma opção entre 1 e 2.\n" +
+                                                "    ===========================================\n");
+        }
+    }
+    
+    public void isLevelValid(int opt) throws InvalidAttributeException{
+        if(!(opt >= 1 && opt <= 4)){
+            throw new InvalidAttributeException("\n    =============================================\n" +
+                                                "    Por favor, escolha um valor entre 1, 2, 3 e 4.\n" +
+                                                "    =============================================\n");
+        }
+    }
+    
+    public void isHelpOptionValid(int opt) throws InvalidAttributeException{
+        if(!(opt == 'S' || opt == 'N')){
+            throw new InvalidAttributeException("\n    =============================================\n" +
+                                                "    Por favor, escolha entre S ou N\n" +
+                                                "    =============================================\n");
         }
     }
 }
